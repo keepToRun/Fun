@@ -1,0 +1,2 @@
+# Fun
+test wechat api
