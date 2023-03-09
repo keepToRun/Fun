@@ -1,28 +1,38 @@
 <!doctype html>
 <html ng-app="spicyApp1">
-  <head>
-    <script src="http://code.angularjs.org/1.2.25/angular.min.js"></script>
-    <script>
-        var myApp = angular.module('spicyApp1', []);
- 
- myApp.controller('SpicyCtrl', ['$scope', function($scope){
-     $scope.spice = 'very';
-     
-     $scope.chiliSpicy = function() {
-         $scope.spice = 'chili';
-     };
-     
-     $scope.jalapenoSpicy = function() {
-         $scope.spice = 'jalapeño';
-     };
- }]);
-    </script>
-  </head>
-  <body>
-    <div ng-app="spicyApp1" ng-controller="SpicyCtrl">
-     <button ng-click="chiliSpicy()">Chili</button>
-     <button ng-click="jalapenoSpicy()">Jalapeño</button>
-     <p>The food is {{spice}} spicy!</p>
-    </div>
-  </body>
+
+<head>
+  <script src="http://code.angularjs.org/1.2.25/angular.min.js"></script>
+  <script src="http://res2.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+  <script>
+    var myApp = angular.module('spicyApp1', []);
+    wx.config({
+      debug: true, // 开启调试模式,调用的所有 api 的返回值会在客户端 alert 出来，若要查看传入的参数，可以在 pc 端打开，参数信息会通过 log 打出，仅在 pc 端时才会打印。
+      appId: 'wx7dcbabc6e09168b2', // 必填，公众号的唯一标识
+      timestamp:1678332463 , // 必填，生成签名的时间戳
+      nonceStr: 'qweeeeeeeqw', // 必填，生成签名的随机串
+      signature: '1cacd2eeb5e3f36448e704f7d0360d6821f63038',// 必填，签名
+      jsApiList: ['scanQRCode'] // 必填，需要使用的 JS 接口列表
+    });
+    myApp.controller('SpicyCtrl', ['$scope', function ($scope) {
+
+      $scope.scan = function () {
+        wx.scanQRCode({
+          needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: function (res) {
+            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+          }
+        });
+      };
+    }]);
+  </script>
+</head>
+
+<body>
+  <div ng-app="spicyApp1" ng-controller="SpicyCtrl">
+    <button ng-click="scan()">扫一扫</button>
+  </div>
+</body>
+
 </html>
